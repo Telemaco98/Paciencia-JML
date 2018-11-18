@@ -24,7 +24,7 @@
 
 	<!-- THE ASPECTJML COMPILER (ajmlc) VERSION BEING USED  -->
 
-	<property name="Main.class"                 value="cmdUi" />
+	<property name="AspectJML"                 value="1.8.0" />
 
 
 	<!-- SYSTEM DEPENDENT VARIABLES        -   CHANGE FOR YOUR NEEDS  -->
@@ -36,7 +36,7 @@
 	<!-- Target directory to print the instrumented source code (isc) as AspectJ aspects -->
 	<property name="dest.dir.isc"              value="isc" />
 	<property name="crossref.dir"              value="crossref" />
-	<property name="main.class"                value="my.package.name.ClassnameOfMain" />
+	<property name="Main.class"                value="cmdUi" />
 	<property name="app.lib"                   value="lib" />
 	<property name="aspectjml.lib"             value="aspectjml-lib" />
 	<!-- NOTE: 'aspectjml.lib' MUST INCLUDE ASPECTJ WEAVERS, AJC AND ABC -->
