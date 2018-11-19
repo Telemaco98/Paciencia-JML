@@ -2,9 +2,11 @@ package model;
 
 import util.Carta;
 
-/**Representa uma Pilha de Descarte do jogo Paciência. 
- * É a pilha que possui todas as cartas que são puxadas
- * do Estoque.*/
+/**
+ * Representa uma Pilha de Descarte do jogo Paciencia.
+ * Eh a pilha que possui todas as cartas que sao puxadas
+ * do Estoque.
+ **/
 public class Descarte extends Pilha {
 
 	public Descarte (){

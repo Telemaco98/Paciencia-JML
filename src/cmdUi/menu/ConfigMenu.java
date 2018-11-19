@@ -1,7 +1,7 @@
 package cmdUi.menu;
 
-import Controller.Controller;
 import cmdUi.Main;
+import controller.Controller;
 
 public class ConfigMenu extends AbstractMenu{
 	

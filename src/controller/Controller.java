@@ -1,4 +1,4 @@
-package Controller;
+package controller;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -13,16 +13,11 @@ import util.Observer;
 import util.View;
 
 
-/**Controlador que encapsula as possíveis ações do jogo e faz o controle das configurações.*/
 public class Controller implements Observer{
 
-	/**Mesa do jogo Paciência*/
 	private Mesa mesa;
-	/**Classe que representa a interface gráfica para o controller*/
 	private View view;
-	/**Momento de início do jogo*/
 	private Instant start;
-	/**Momento de fim do jogo*/
 	private Instant end;
 	
 	public Controller(View view) {
@@ -30,8 +25,6 @@ public class Controller implements Observer{
 		iniciarJogo();
 	}
 	
-	/**Inicia o jogo criando uma nova mesa com baralho embaralhado e guardando o horário 
-	 * de início.*/
 	public void iniciarJogo() {
 		start = Instant.now();
 		mesa = new Mesa(new Baralho(true));

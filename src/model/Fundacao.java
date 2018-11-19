@@ -3,10 +3,7 @@ package model;
 
 import util.Carta;
 
-/**Representa uma Pilha de Fundação do jogo Paciência. 
- * É a pilha onde ficam os montes de cartas para cada naipe.
- * Se o jogador preencher de forma crescente cada Fundação dos 4 naipes,
- * ele vence o jogo.*/
+
 public class Fundacao extends Pilha {
 
 	public Fundacao() {
