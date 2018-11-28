@@ -8,10 +8,13 @@ import controller.Controller;
 
 public class MainMenu extends AbstractMenu {
 
-	private PilhaListView plv;
+	private /*@ spec_public @*/ PilhaListView plv;
 	
-	public MainMenu(Controller con, int options, AbstractMenu parent) {
-		super(con, options, parent);
+	/*@
+	  @ ensures parent == null;
+	  @*/
+	public MainMenu(Controller con, int options) {
+		super(con, options, null);
 		this.plv = new PilhaListView(con.getPilhas());
 	}
 
@@ -37,6 +40,7 @@ public class MainMenu extends AbstractMenu {
 				
 	}
 	
+	@Override
 	public AbstractMenu processInput(int op) {
 		switch (op) {
 		case 1: opMoverCartas(); break;
@@ -80,7 +84,10 @@ public class MainMenu extends AbstractMenu {
 		}
 	}
 	
-	
+	/*@ requires   plv != null;
+	  @ assignable this.plv;
+	  @ ensures	   this.plv == plv;
+	  @*/
 	public void setPilhaListView (PilhaListView plv) {
 		this.plv = plv;
 	}

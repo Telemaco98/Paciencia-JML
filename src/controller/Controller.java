@@ -15,10 +15,10 @@ import util.View;
 
 public class Controller implements Observer{
 
-	private Mesa mesa;
-	private View view;
-	private Instant start;
-	private Instant end;
+	private /*@ spec_public nullable @*/ Mesa mesa;
+	private /*@ spec_public nullable @*/ View view;
+	private /*@ spec_public nullable @*/ Instant start;
+	private /*@ spec_public nullable @*/ Instant end;
 	
 	public Controller(View view) {
 		this.view = view;

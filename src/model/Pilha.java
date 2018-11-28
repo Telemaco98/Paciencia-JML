@@ -66,7 +66,7 @@ public abstract class Pilha {
 	 * @return Carta do topo da pilha*/
 	public Carta cartaTopo() {
 		if (!isEmpty()) return cartas.peek();
-		return null;
+		else return null;
 	}
 
 	

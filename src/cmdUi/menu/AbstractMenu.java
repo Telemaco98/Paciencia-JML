@@ -6,11 +6,13 @@ import cmdUi.Main;
 import controller.Controller;
 
 public abstract class AbstractMenu {
-	protected Controller con;
-	protected AbstractMenu parent;
+	protected /*@ spec_public nullable @*/ Controller con;
+	protected  /*@ spec_public nullable @*/ AbstractMenu parent;
 	protected int options;
 	protected Scanner sc;
 	
+	/*@ requires parent != null;
+	  @*/
 	protected AbstractMenu(Controller con, int options, AbstractMenu parent) {
 		this.con = con;
 		this.parent = parent;

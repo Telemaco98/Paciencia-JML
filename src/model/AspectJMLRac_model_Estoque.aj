@@ -6,7 +6,7 @@ import util.Carta;
 import java.util.Map;
 
 
-privileged aspect AspectJMLRac_model_Estoque44483d50_2ea7_4cde_a4fb_a30cc109f72e {
+privileged aspect AspectJMLRac_model_Estoque210eb92d_e763_41c6_9453_18b394c2998b {
 
  declare precedence: AspectJMLRac_*, *;
 

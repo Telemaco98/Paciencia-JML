@@ -6,7 +6,7 @@ import java.util.Collections;
 
 public class Baralho {
 
-	private ArrayList<Carta> cartas;
+	private /*@ spec_public @*/ ArrayList<Carta> cartas;
 
 	public Baralho () {
 		cartas = new ArrayList<>();
@@ -37,17 +37,24 @@ public class Baralho {
 		return cartasPuxadas;
 	}
 
+
+	/*@
+	  @ assignable this.cartas, cartasPuxadas;
+	  @ ensures this.cartas.size() == 0;
+	  @ ensures cartasPuxadas.equals(\old(this.cartas));
+	  @*/
 	public ArrayList<Carta> puxarTodasAsCartas() {
 		ArrayList<Carta> cartasPuxadas = new ArrayList<>();
 		
 		cartasPuxadas.addAll(cartas);
 		Collections.reverse(cartasPuxadas);
+		
 		cartas.clear();
 		
 		return cartasPuxadas;
 	}
-
-	public boolean isEmpty() {
+	
+	public /*@ pure @*/ boolean isEmpty() {
 		return cartas.isEmpty();
 	}
 }

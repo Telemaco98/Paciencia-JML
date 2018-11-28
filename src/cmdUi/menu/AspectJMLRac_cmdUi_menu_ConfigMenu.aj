@@ -6,7 +6,7 @@ import controller.Controller;
 import java.util.Map;
 
 
-privileged aspect AspectJMLRac_cmdUi_menu_ConfigMenu520d9330_0eeb_4574_9b77_a4aabb302e64 {
+privileged aspect AspectJMLRac_cmdUi_menu_ConfigMenu25fccb86_7c57_4f2e_bccb_3f6eab2ec6d3 {
 
  declare precedence: AspectJMLRac_*, *;
 

@@ -9,14 +9,17 @@ import util.View;
 public class CmdView implements View{
 
 	/**Controller do jogo Paciência*/
-	private Controller con;
+	private /*@ spec_public nullable @*/ Controller con;
 	
 	/**Tela atual com menu*/
 	private AbstractMenu currentMenu;
 	
+	/*@
+	  @ ensures con != null;
+	  @*/
 	public CmdView() {
 		con = new Controller(this);
-		currentMenu = new MainMenu(con,5,null);
+		currentMenu = new MainMenu(con,5);
 	}
 	
 	/**Inicia o loop onde a tela é desenhada, o sistema espera uma entrada, e logo depois, realiza uma ação.*/

@@ -4,7 +4,7 @@ import org.jmlspecs.lang.annotation.*;
 import java.util.Map;
 
 
-privileged aspect AspectJMLRac_util_Observable16a19648_d07d_4970_9805_b576fc1cabf2 {
+privileged aspect AspectJMLRac_util_Observablec9f62f84_6a4b_403a_b3d0_8cee3a6c4ed4 {
 
  declare precedence: AspectJMLRac_*, *;
 
