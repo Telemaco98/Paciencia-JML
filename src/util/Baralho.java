@@ -8,7 +8,8 @@ import java.util.Collections;
 public class Baralho {
 	private /*@ spec_public @*/ ArrayList<Carta> cartas;
 
-	/*@ ensures cartas.size() == 52;
+	/*@ assignable this.cartas;
+	  @ ensures    this.cartas.size() == 52;
 	  @*/
 	public Baralho () {
 		cartas = new ArrayList<>();
@@ -20,8 +21,7 @@ public class Baralho {
 		}
 	}
 	
-	/*@ assignable this.cartas;
-	  @ ensures Arrays.equals(\old(this.cartas.toArray()), this.cartas.toArray()) == false; 
+	/*@ assignable this.cartas; 
 	  @*/
 	public Baralho (boolean embaralhar) {
 		this();
@@ -30,9 +30,9 @@ public class Baralho {
 		}
 	}
 	
-	/*@ requires qtd > 0;
-	  @ ensures this.cartas.size() == \old(this.cartas.size()) - \old(qtd); 
-	  @ ensures qtd == 0;
+	/*@ requires   0 <= qtd;
+	  @ assignable this.cartas;
+	  @ ensures    this.cartas.size() == (\old(this.cartas.size()) - qtd)  || this.isEmpty(); 
 	  @*/
 	public ArrayList<Carta> puxarCartas(int qtd) {
 		ArrayList<Carta> cartasPuxadas = new ArrayList<>();
@@ -47,9 +47,8 @@ public class Baralho {
 	}
 
 
-	/*@
-	  @ assignable this.cartas;
-	  @ ensures this.cartas.size() == 0;
+	/*@ assignable this.cartas;
+	  @ ensures    this.cartas.size() == 0;
 	  @*/
 	public ArrayList<Carta> puxarTodasAsCartas() {
 		ArrayList<Carta> cartasPuxadas = new ArrayList<>();
@@ -64,5 +63,12 @@ public class Baralho {
 	
 	public /*@ pure @*/ boolean isEmpty() {
 		return cartas.isEmpty();
+	}
+	
+	public static void main(String[] args) {
+		Baralho b = new Baralho(true);
+		System.out.println(b.puxarCartas(40));
+		System.out.println(b.puxarTodasAsCartas());
+		System.out.println(b.isEmpty());
 	}
 }

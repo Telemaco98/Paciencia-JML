@@ -14,7 +14,7 @@ import util.Observer;
 public class Mesa implements Observable {
 
 	/**Pilhas de cartas*/
-	private ArrayList<Pilha> pilhas;
+	private /*@ spec_public nullable @*/ ArrayList<Pilha> pilhas;
 	
 	/**Quantidade inicial do estoque*/
 	private static final int QTD_ESTOQUE_INICIAL = 52-1-2-3-4-5-6-7; //Quantidade de cartas do estoque inicialmente é igual a 52 menos as cartas das fileiras
@@ -24,10 +24,10 @@ public class Mesa implements Observable {
 		VENCIDO, JOGANDO, IMPASSE;
 	};
 	
-	private Verificador verificador = new Verificador();
+	private /*@ spec_public @*/ Verificador verificador = new Verificador();
 	
 	/**Observadores dessa classe*/
-	private ArrayList<Observer> observers = new ArrayList<>();
+	private /*@ spec_public @*/ ArrayList<Observer> observers = new ArrayList<>();
 	
 	/**Gera as pilhas de acordo com as regras do jogo.
 	 * @param baralho	Fonte de cartas para construir Estoque e Fileiras*/
@@ -218,6 +218,9 @@ public class Mesa implements Observable {
 		
 		/**Verifica se o jogador já venceu a partida.
 		 * @return Booleano representando se o jogador já venceu ou não*/
+		/*@ 
+		  @ ensures \result == false || \result == true;
+		  @*/
 		private boolean verificarJogoVencido() {
 			for (int i = 0; i < 4; i++) {
 				Pilha fundacao = getFundacao(i);

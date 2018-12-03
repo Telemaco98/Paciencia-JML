@@ -109,7 +109,7 @@ public abstract class Pilha {
 		return cartas.isEmpty();
 	}
 	
-	public Carta[] getCartas() {
+	public  /*@ pure @*/ Carta[] getCartas() {
 		Object[] obs = cartas.toArray();
 		Carta[] cards = new Carta[obs.length];
 		
@@ -118,7 +118,7 @@ public abstract class Pilha {
 		return cards;
 	}
 	
-	public String toString() {
+	public /*@ pure @*/ String toString() {
 		StringBuilder sb = new StringBuilder();
 		boolean first = true;
 		for (Carta carta: cartas) {

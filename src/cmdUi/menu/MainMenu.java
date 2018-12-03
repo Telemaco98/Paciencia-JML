@@ -19,7 +19,7 @@ public class MainMenu extends AbstractMenu {
 	}
 
 	@Override
-	public void draw() {
+	public /*@ pure @*/ void draw() {
 		
 		if (con.isVencedor()){
 			Main.print("\n\nPARABÉNS! VOCÊ VENCEU!!! \n\n");
@@ -37,7 +37,6 @@ public class MainMenu extends AbstractMenu {
 		Main.print("3 - MUDAR CONFIGURACAO DE ESTOQUE\n");
 		Main.print("4 - REINICIAR\n");
 		Main.print("5 - FINALIZAR\n");
-				
 	}
 	
 	@Override
