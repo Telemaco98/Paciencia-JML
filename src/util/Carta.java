@@ -41,7 +41,8 @@ public class Carta implements Comparable<Carta>{
 		return naipe.getColor();
 	}
 
-	public int getValor() {
+	
+	public /*@ pure @*/ int getValor() {
 		return valor;
 	}
 
@@ -49,7 +50,7 @@ public class Carta implements Comparable<Carta>{
 		this.valor = valor;
 	}
 
-	public Naipe getNaipe() {
+	public /*@ pure @*/ Naipe getNaipe() {
 		return naipe;
 	}
 
@@ -57,7 +58,7 @@ public class Carta implements Comparable<Carta>{
 		this.naipe = naipe;
 	}
 	
-	public boolean isParaCima() {
+	public /*@ pure @*/ boolean isParaCima() {
 		return paraCima;
 	}
 	
@@ -66,11 +67,11 @@ public class Carta implements Comparable<Carta>{
 		paraCima = !paraCima;
 	}
 	
-	public boolean isMaiorValor () {
+	public /*@ pure @*/ boolean isMaiorValor () {
 		return valor==MAIOR_VALOR;
 	}
 	
-	public boolean isMenorValor() {
+	public /*@ pure @*/ boolean isMenorValor() {
 		return valor==MENOR_VALOR;
 	}
 	
@@ -78,7 +79,7 @@ public class Carta implements Comparable<Carta>{
 	 * ou o valor da carta seguido do Naipe caso paraCima seja true.
 	 * 
 	 * @return String que representa a carta*/
-	public String toString() {
+	public /*@ pure @*/ String toString() {
 		if (!isParaCima()) {
 			return "[<>]";
 		} 
@@ -96,7 +97,7 @@ public class Carta implements Comparable<Carta>{
 	}
 
 	@Override
-	public int compareTo(Carta o) {
+	public /*@ pure @*/ int compareTo(Carta o) {
 		if (this.valor == o.getValor()) return 0;
 		if (this.valor > o.getValor()) return 1;
 		else return -1;

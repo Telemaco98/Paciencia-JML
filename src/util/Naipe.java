@@ -16,7 +16,7 @@ public enum Naipe {
 	/**A cor de uma Carta depende do seu Naipe. Caso seja OURO ou COPAS, será vermelha
 	 * , caso seja PAUS ou ESPADA será preta.
 	 * @return	Cor da carta a partir do Naipe*/
-	public Color getColor() {
+	public /*@ pure @*/ Color getColor() {
 		boolean isRed = this == OURO || this == COPAS;
 		boolean isBlack = this == ESPADA || this == PAUS;
 		
