@@ -1,6 +1,7 @@
 package model;
 
 
+import exception.PilhaVaziaException;
 import util.Carta;
 
 
@@ -19,7 +20,12 @@ public class Fundacao extends Pilha {
 			return false;
 		}
 		
-		Carta topo = cartaTopo();
+		Carta topo = null;
+		try {
+			topo = cartaTopo();
+		} catch (PilhaVaziaException e) {
+			System.out.println("Não há carta no topo");
+		}
 		
 		if (topo.getValor()+1 == carta.getValor() && topo.getNaipe() == carta.getNaipe())
 			return true;

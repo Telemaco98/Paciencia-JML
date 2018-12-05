@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 
 import config.Configuracao;
+import exception.PilhaVaziaException;
 import util.Baralho;
 import util.Carta;
 import util.Observable;
@@ -43,10 +44,13 @@ public class Mesa implements Observable {
 		//7 fileiras
 		for (int i = 1; i <= 7; i++)  {
 			Pilha fileira = new Fileira(baralho.puxarCartas(i));
-			fileira.cartaTopo().virarCarta();
-			pilhas.add(fileira);
+			try {
+				fileira.cartaTopo().virarCarta();
+				pilhas.add(fileira);
+			} catch (PilhaVaziaException e) {
+				System.out.println("Não há carta no topo");
+			}
 		}
-		
 	}
 	
 	/**Move as cartas do estoque para o descarte de acordo com a configuração escolhida pelo usuário.*/

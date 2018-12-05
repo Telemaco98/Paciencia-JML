@@ -1,9 +1,12 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.Stack;
 
+import exception.PilhaVaziaException;
 import util.Carta;
+import util.Naipe;
 
 /**Representa uma pilha do jogo Paciência. 
  * Pode receber cartas segundo as regras para cada tipo de Pilha.*/
@@ -93,9 +96,15 @@ public abstract class Pilha {
 	
 	/**Carta do topo da pilha.
 	 * @return Carta do topo da pilha*/
-	public /*@ pure @*/ Carta cartaTopo() {
-		if (!isEmpty()) return cartas.peek();
-		else return null;
+	public /*@ pure @*/ Carta cartaTopo() throws PilhaVaziaException {
+		Carta carta = new Carta (1, Naipe.COPAS);
+		try {
+			carta = cartas.peek();
+		} catch (EmptyStackException e) {
+			throw new PilhaVaziaException("Não há carta no topo, pilha vazia");
+		}
+		
+		return carta;
 	}
 
 	

@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
+import exception.PilhaVaziaException;
 import util.Carta;
 
 /**Representa uma Pilha Fileira do jogo Paciência. 
@@ -29,13 +30,17 @@ public class Fileira extends Pilha{
 			return false;
 		}
 		
-		Carta topo = cartaTopo();
+		Carta topo = null;
+		try {
+			topo = cartaTopo();
+		} catch (PilhaVaziaException e) {
+			System.out.println("Não há carta no topo");
+		}
 		
 		if (!topo.isParaCima()) return false;
 		
 		if (topo.getValor()-1 == carta.getValor() && topo.getColor() != carta.getColor())
 			return true;
-	
 		
 		return false;
 	}
