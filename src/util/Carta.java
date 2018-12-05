@@ -2,7 +2,6 @@ package util;
 
 import java.awt.Color;
 
-
 /**
  * Class representando uma carta de um baralho
  * @author Heitor e Ivan

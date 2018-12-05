@@ -26,6 +26,7 @@ public abstract class Pilha {
 	}
 	
 	/**Inserir cartas na pilha.*/
+	// ensures cartas == \old(this.cartas) + cartas;
 	public void inserirCartas (ArrayList<Carta> cartas) {
 		this.cartas.addAll(cartas);
 	}
@@ -72,12 +73,14 @@ public abstract class Pilha {
 	
 	/**Retirar carta do topo da pilha.
 	 * @return Carta do topo da pilha*/
+	/*@ assignable this.cartas; 
+	  @*/
 	public Carta puxarCartaTopo() {
 		if (!isEmpty()) return  cartas.pop();
 		else return null;
 	}
 	
-	private Carta getCartaParaCimaByValor(int valor) {
+	private /*@ pure @*/ Carta getCartaParaCimaByValor(int valor) {
 		for (Carta carta: cartas) {
 			if (carta.getValor() == valor && carta.isParaCima()) return carta;
 		}
@@ -105,7 +108,7 @@ public abstract class Pilha {
 	
 	/**Checar se Pilha está vazia.
 	 * @return Booleano representando se Pilha está vazia*/
-	public boolean isEmpty() {
+	public /*@ pure @*/ boolean isEmpty() {
 		return cartas.isEmpty();
 	}
 	

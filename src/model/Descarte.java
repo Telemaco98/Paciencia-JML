@@ -1,6 +1,7 @@
 package model;
 
 import util.Carta;
+import util.Naipe;
 
 /**
  * Representa uma Pilha de Descarte do jogo Paciencia.
@@ -8,14 +9,17 @@ import util.Carta;
  * do Estoque.
  **/
 public class Descarte extends Pilha {
-
 	public Descarte (){
 		super();
 	}
 	
 	@Override
-	protected boolean verificarCarta(Carta carta) {
+	protected /*@ pure @*/ boolean verificarCarta(Carta carta) {
 		return false;
 	}
-
+	
+	public static void main(String[] args) {
+		Descarte descarte = new Descarte();
+		System.out.println(descarte.verificarCarta(new Carta(1, Naipe.ESPADA)));
+	}
 }
