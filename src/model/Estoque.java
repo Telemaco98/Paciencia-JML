@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-
 import util.Carta;
 
 public class Estoque extends Pilha {
@@ -12,9 +11,7 @@ public class Estoque extends Pilha {
 	
 	/*@ requires cartasParaBaixo != null;
 	  @ assignable this.cartas;
-	  @ ensures cartas.size(\old(this.cartas.size()) + cartasParaBaixo.size());
-	  @ ensures cartas.constainsAll(\old(this.cartas));
-	  @ ensures cartas.constainsAll(cartasParaBaixo);
+	  @ ensures this.cartas.equals(\old(this.cartas).addAll(cartasParaBaixo));
 	  @*/
 	public Estoque(ArrayList<Carta> cartasParaBaixo) {
 		this();

@@ -126,5 +126,5 @@ public class Carta implements Comparable<Carta> {
 		System.out.println(carta.isMaiorValor());
 		System.out.println(carta.isMenorValor());
 		System.out.println(carta);
-	}	
+	}
 }
