@@ -7,15 +7,14 @@ import java.awt.Color;
  * Class representando uma carta de um baralho
  * @author Heitor e Ivan
  * */
-public class Carta implements Comparable<Carta>{
-
+public class Carta implements Comparable<Carta> {
 	/**Valor da carta*/
-	private int valor;
+	private /*@ spec_public @*/ int valor;
 	/**Naipe da carta*/
-	private Naipe naipe;
+	private /*@ spec_public @*/ Naipe naipe;
 
 	/**Define se a carta está para cima ou para baixo*/
-	private boolean paraCima;
+	private /*@ spec_public @*/ boolean paraCima;
 	
 	/**Valor do Rei*/
 	public static final int K = 13;
@@ -31,13 +30,18 @@ public class Carta implements Comparable<Carta>{
 	/**Menor valor do jogo*/
 	public static final int MENOR_VALOR = AS;
 	
+	/*@ requires 1 <= valor && valor <= 13;
+	  @ requires naipe != null;
+	  @ assignable this.valor;
+	  @ assignable this.naipe;
+	  @*/
 	public Carta (int valor, Naipe naipe) {
 		this.valor = valor;
 		this.naipe = naipe;
 		paraCima = false;
 	}
-	
-	public Color getColor() {
+		
+	public /*@ pure @*/ Color getColor() {
 		return naipe.getColor();
 	}
 
@@ -46,6 +50,9 @@ public class Carta implements Comparable<Carta>{
 		return valor;
 	}
 
+	/*@ assignable this.valor;
+	  @ ensures this.valor == valor;
+	  @*/
 	public void setValor(int valor) {
 		this.valor = valor;
 	}
@@ -54,6 +61,9 @@ public class Carta implements Comparable<Carta>{
 		return naipe;
 	}
 
+	/*@ assignable this.naipe;
+	  @ ensures this.naipe == naipe; 
+	  @*/
 	public void setNaipe(Naipe naipe) {
 		this.naipe = naipe;
 	}
@@ -61,18 +71,21 @@ public class Carta implements Comparable<Carta>{
 	public /*@ pure @*/ boolean isParaCima() {
 		return paraCima;
 	}
-	
-	/**Inverte o valor da variável paraCima*/
+
+	/** Change the paraCima variable value */
+	/*@ assignable paraCima;
+	  @ ensures this.paraCima == !(\old(this.paraCima));
+	  @*/
 	public void virarCarta() {
 		paraCima = !paraCima;
 	}
 	
 	public /*@ pure @*/ boolean isMaiorValor () {
-		return valor==MAIOR_VALOR;
+		return valor == MAIOR_VALOR;
 	}
 	
 	public /*@ pure @*/ boolean isMenorValor() {
-		return valor==MENOR_VALOR;
+		return valor == MENOR_VALOR;
 	}
 	
 	/**Retorna uma representação de carta para baixo se paraCima for false,
@@ -91,7 +104,7 @@ public class Carta implements Comparable<Carta>{
 			else if (valor == AS) str += "AS";
 			else str += valor;
 			
-			str += " "+naipe.name();
+			str += " " +naipe.name();
 			return str;
 		}
 	}
@@ -103,4 +116,16 @@ public class Carta implements Comparable<Carta>{
 		else return -1;
 	}
 	
+	public static void main(String[] args) {
+		Carta carta = new Carta(J, Naipe.OURO);
+		System.out.println(carta.getColor());
+		System.out.println(carta.getValor());
+		carta.setValor(10);
+		carta.setNaipe(Naipe.COPAS);
+		System.out.println(carta.isParaCima());
+		carta.virarCarta();
+		System.out.println(carta.isMaiorValor());
+		System.out.println(carta.isMenorValor());
+		System.out.println(carta);
+	}	
 }

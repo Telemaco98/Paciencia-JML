@@ -10,22 +10,36 @@ import util.Carta;
 public abstract class Pilha {
 	
 	/**Pilha de cartas*/
-	protected Stack<Carta> cartas;
+	protected /*@ spec_public @*/ Stack<Carta> cartas;
 	
+	/*@ assignable this.cartas;
+	  @ ensures    this.cartas != null;
+	  @ ensures    this.cartas.size() == 0;
+	  @*/
 	public Pilha() {
 		cartas = new Stack<>();
 	}
 	
 	/**Cada Pilha implementa seu modo de verificar se pode receber uma carta.
 	 * @return Booleano representando se a carta pode ser inserida ou não*/
-	protected abstract boolean verificarCarta(Carta carta);
+	protected abstract /*@ pure @*/ boolean verificarCarta(Carta carta);
 	
 	/**Inserir carta na pilha.*/
+	/*@ requires   carta != null; 
+	  @ assignable this.cartas;
+	  @ ensures    this.cartas.size() == \old(this.cartas.size()) + 1;
+	  @ ensures    this.cartas.search(carta) != -1;
+	  @*/
 	public void inserirCarta(Carta carta) {
 		cartas.push(carta);
 	}
 	
 	/**Inserir cartas na pilha.*/
+	/*@ requires   cartas.contains(null) == false; 
+	  @ assignable this.cartas;
+	  @ ensures    this.cartas.size() == \old(this.cartas.size()) + cartas.size();
+	  @ ensures    this.cartas.containsAll(cartas) == true;
+	  @*/
 	public void inserirCartas (ArrayList<Carta> cartas) {
 		this.cartas.addAll(cartas);
 	}
@@ -34,6 +48,14 @@ public abstract class Pilha {
 	 * Depende da verificação de cada tipo de Pilha.
 	 * @param carta		Carta que quer ser inserida
 	 * @return Booleano representando se a carta foi inserida*/
+	/*@ 	requires   carta != null && this.verificarCarta(carta); 
+	  @ 	assignable this.cartas;
+	  @ 	ensures    this.cartas.size() == \old(this.cartas.size()) + 1;
+	  @ 	ensures    this.cartas.search(carta) != -1
+	  @ also
+	  @ 	requires   carta == null || this.verificarCarta(carta) == false;
+	  @ 	ensures    this.cartas == \old(this.cartas);
+	  @*/
 	public boolean receberCarta(Carta carta) {
 		if (carta != null && verificarCarta(carta)) {
 			inserirCarta(carta);
@@ -46,6 +68,13 @@ public abstract class Pilha {
 	 * Depende da verificação de cada tipo de Pilha.
 	 * @param cartas		Cartsa que querem ser inseridas
 	 * @return Booleano representando se as cartas foram inseridas*/
+	/*@ 	requires   cartas.contains(null) == false;
+	  @ 	assignable this.cartas;
+	  @ also
+	  @ 	requires   cartas == null || cartas.size() <= 0;
+	  @ 	assignable this.cartas;
+	  @ 	ensures    this.cartas == \old(this.cartas);
+	  @*/
 	public boolean receberCartas(ArrayList<Carta> cartas) {
 		
 		if (cartas == null || cartas.size() <= 0 ) return false;
@@ -64,7 +93,7 @@ public abstract class Pilha {
 	
 	/**Carta do topo da pilha.
 	 * @return Carta do topo da pilha*/
-	public Carta cartaTopo() {
+	public /*@ pure @*/ Carta cartaTopo() {
 		if (!isEmpty()) return cartas.peek();
 		else return null;
 	}
@@ -72,12 +101,16 @@ public abstract class Pilha {
 	
 	/**Retirar carta do topo da pilha.
 	 * @return Carta do topo da pilha*/
+	/*@ assignable this.cartas;
+	  @ ensures    this.cartas.size() == \old(this.cartas.size()) - 1;
+	  @ ensures    this.cartas.search(this.cartas.peek()) == -1;
+	  @*/
 	public Carta puxarCartaTopo() {
 		if (!isEmpty()) return  cartas.pop();
 		else return null;
 	}
 	
-	private Carta getCartaParaCimaByValor(int valor) {
+	private /*@ pure @*/ Carta getCartaParaCimaByValor(int valor) {
 		for (Carta carta: cartas) {
 			if (carta.getValor() == valor && carta.isParaCima()) return carta;
 		}
@@ -87,6 +120,10 @@ public abstract class Pilha {
 	/**Puxa todas as cartas acima de uma carta de valor passado como parâmetro.
 	 * @param valor		Valor da primeira carta do monte a ser movido
 	 * @return Lista de cartas puxadas*/
+	/*@ requires   requires 1 <= valor && valor <= 13;
+	  @ assignable this.cartas;
+	  @ ensures    this.cartas.size() < \old(this.cartas.size());
+	  @*/
 	public ArrayList<Carta> puxarAPartirDeCarta(int valor){
 		Carta primeira = getCartaParaCimaByValor(valor);
 		ArrayList<Carta> result = new ArrayList<>();
@@ -105,7 +142,7 @@ public abstract class Pilha {
 	
 	/**Checar se Pilha está vazia.
 	 * @return Booleano representando se Pilha está vazia*/
-	public boolean isEmpty() {
+	public /*@ pure @*/ boolean isEmpty() {
 		return cartas.isEmpty();
 	}
 	
