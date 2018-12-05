@@ -17,10 +17,10 @@ public abstract class Pilha {
 	
 	/*@ assignable this.cartas;
 	  @ ensures    this.cartas != null;
-	  @ ensures    this.cartas.size() == 0;
 	  @*/
+	//ensures    this.cartas.size() == 0; -- > ele não pode garantir isso
 	public Pilha() {
-		cartas = new Stack<>();
+		this.cartas = new Stack<>();
 	}
 	
 	/**Cada Pilha implementa seu modo de verificar se pode receber uma carta.

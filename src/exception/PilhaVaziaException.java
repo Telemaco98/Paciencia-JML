@@ -1,6 +1,8 @@
 package exception;
 
-public class PilhaVaziaException extends Exception {
+public class PilhaVaziaException extends RuntimeException {
+	private static final long serialVersionUID = 1L;
+
 	public PilhaVaziaException() {
 		super();
 	}

@@ -94,7 +94,13 @@ public class Mesa implements Observable {
 		
 		Pilha fileira = getFileira(index);
 		
-		Carta topo = fileira.cartaTopo();
+		Carta topo = null;
+		try {
+			topo = fileira.cartaTopo();
+		} catch (PilhaVaziaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		if (!topo.isParaCima()) topo.virarCarta();
 		
@@ -228,7 +234,12 @@ public class Mesa implements Observable {
 		private boolean verificarJogoVencido() {
 			for (int i = 0; i < 4; i++) {
 				Pilha fundacao = getFundacao(i);
-				Carta topo = fundacao.cartaTopo();
+				Carta topo = null;
+				try {
+					topo = fundacao.cartaTopo();
+				} catch (PilhaVaziaException e) {
+					e.printStackTrace();
+				}
 				if (topo == null) return false;
 				if (!topo.isMaiorValor()) return false;
 			}
