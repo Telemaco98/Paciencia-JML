@@ -27,12 +27,12 @@ public class Estoque extends Pilha {
 	public static void main(String[] args) {
 		Estoque estoque = new Estoque();
 		System.out.println(estoque.isEmpty());
-		estoque.verificarCarta(new Carta(8, Naipe.PAUS));
+		System.out.println(estoque.verificarCarta(new Carta(8, Naipe.PAUS)));
 		
 		try {
 			System.out.println(estoque.cartaTopo());
 		} catch (PilhaVaziaException e) {
-			e.printStackTrace();
+			System.out.println(e);
 		}
 		
 		ArrayList<Carta> cartasPbaixo = new ArrayList<>();

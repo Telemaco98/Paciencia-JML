@@ -32,6 +32,7 @@ public class Mesa implements Observable {
 	
 	/**Gera as pilhas de acordo com as regras do jogo.
 	 * @param baralho	Fonte de cartas para construir Estoque e Fileiras*/
+
 	public Mesa(Baralho baralho) {
 		pilhas = new ArrayList<>();
 				
@@ -246,5 +247,11 @@ public class Mesa implements Observable {
 			return true;
 		}
 
+	}
+	
+	public static void main(String[] args) {
+		Baralho baralho = new Baralho();
+		Mesa mesa = new Mesa(baralho);
+		System.out.println(mesa);
 	}
 }

@@ -97,10 +97,10 @@ public abstract class Pilha {
 	/**Carta do topo da pilha.
 	 * @return Carta do topo da pilha*/
 	/*@   public normal_behavior
-	  @     requires     cartas.isEmpty();
+	  @     requires     !cartas.isEmpty();
 	  @ also
 	  @   public exceptional_behavior
-	  @ 	requires     !cartas.isEmpty();
+	  @ 	requires     cartas.isEmpty();
 	  @ 	signals_only PilhaVaziaException;
 	  @*/
 	public Carta cartaTopo() throws PilhaVaziaException {
@@ -124,7 +124,7 @@ public abstract class Pilha {
 	  @    ensures    this.cartas.search(this.cartas.peek()) == -1;
 	  @ also
 	  @   public exceptional_behavior
-	  @ 	requires     !cartas.isEmpty();
+	  @ 	requires     cartas.isEmpty();
 	  @ 	signals_only PilhaVaziaException;
 	  @*/
 	public Carta puxarCartaTopo() throws PilhaVaziaException{
@@ -177,6 +177,11 @@ public abstract class Pilha {
 	public /*@ pure @*/ boolean isEmpty() {
 		return cartas.isEmpty();
 	}
+	
+	public /*@ pure @*/ int size() {
+		return cartas.size();
+	}
+	
 	
 	public  /*@ pure @*/ Carta[] getCartas() {
 		Object[] obs = cartas.toArray();

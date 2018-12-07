@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import exception.PilhaVaziaException;
 import util.Carta;
+import util.Naipe;
 
 /**Representa uma Pilha Fileira do jogo Paciência. 
  * Esta pilha possui cartas viradas para baixo e para cima. 
@@ -16,13 +17,15 @@ public class Fileira extends Pilha{
 		super();
 	}
 	
+	/*@ requires cartasParaBaixo != null;
+	  @ assignable this.cartas; */
 	public Fileira(ArrayList<Carta> cartasParaBaixo) {
 		this();
 		cartas.addAll(cartasParaBaixo);
 	}
 
 	@Override
-	protected boolean verificarCarta(Carta carta) {
+	protected /*@ pure @*/ boolean verificarCarta(Carta carta) {
 		if (!carta.isParaCima()) return false;
 		
 		if (isEmpty()) {
@@ -43,6 +46,27 @@ public class Fileira extends Pilha{
 			return true;
 		
 		return false;
+	}
+	
+	public static void main(String[] args) {
+		Fileira fileira = new Fileira();
+		System.out.println(fileira.isEmpty());
+		System.out.println(fileira.verificarCarta(new Carta(8, Naipe.PAUS)));
+		
+		try {
+			System.out.println(fileira.cartaTopo());
+		} catch (PilhaVaziaException e) {
+			System.out.println(e);
+		}
+		
+		ArrayList<Carta> cartasPbaixo = new ArrayList<>();
+		cartasPbaixo.add(new Carta(9, Naipe.COPAS));
+		cartasPbaixo.add(new Carta(1, Naipe.OURO));
+		cartasPbaixo.add(new Carta(Carta.AS, Naipe.PAUS));
+		cartasPbaixo.add(new Carta(Carta.K, Naipe.ESPADA));
+		fileira = new Fileira(cartasPbaixo);
+		
+		System.out.println(fileira);
 	}
 
 }
