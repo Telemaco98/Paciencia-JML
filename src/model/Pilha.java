@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
+import exception.CartaNotFoundException;
 import exception.PilhaVaziaException;
 import util.Carta;
 import util.Naipe;
@@ -18,7 +19,6 @@ public abstract class Pilha {
 	/*@ assignable this.cartas;
 	  @ ensures    this.cartas != null;
 	  @*/
-	//ensures    this.cartas.size() == 0; -- > ele não pode garantir isso
 	public Pilha() {
 		this.cartas = new Stack<>();
 	}
@@ -96,7 +96,14 @@ public abstract class Pilha {
 	
 	/**Carta do topo da pilha.
 	 * @return Carta do topo da pilha*/
-	public /*@ pure @*/ Carta cartaTopo() throws PilhaVaziaException {
+	/*@   public normal_behavior
+	  @     requires     cartas.isEmpty();
+	  @ also
+	  @   public exceptional_behavior
+	  @ 	requires     !cartas.isEmpty();
+	  @ 	signals_only PilhaVaziaException;
+	  @*/
+	public Carta cartaTopo() throws PilhaVaziaException {
 		Carta carta = new Carta (1, Naipe.COPAS);
 		try {
 			carta = cartas.peek();
@@ -110,20 +117,38 @@ public abstract class Pilha {
 	
 	/**Retirar carta do topo da pilha.
 	 * @return Carta do topo da pilha*/
-	/*@ assignable this.cartas;
-	  @ ensures    this.cartas.size() == \old(this.cartas.size()) - 1;
-	  @ ensures    this.cartas.search(this.cartas.peek()) == -1;
+	/*@   public normal_behavior
+	  @	   requires   !cartas.isEmpty();
+	  @    assignable this.cartas;
+	  @    ensures    this.cartas.size() == \old(this.cartas.size()) - 1;
+	  @    ensures    this.cartas.search(this.cartas.peek()) == -1;
+	  @ also
+	  @   public exceptional_behavior
+	  @ 	requires     !cartas.isEmpty();
+	  @ 	signals_only PilhaVaziaException;
 	  @*/
-	public Carta puxarCartaTopo() {
-		if (!isEmpty()) return  cartas.pop();
-		else return null;
+	public Carta puxarCartaTopo() throws PilhaVaziaException{
+		Carta carta = new Carta (1, Naipe.COPAS);
+		try {
+			carta = cartas.pop();
+		} catch (EmptyStackException e) {
+			throw new PilhaVaziaException("Não há carta no topo, pilha vazia");
+		}
+		return carta;
 	}
 	
-	private /*@ pure @*/ Carta getCartaParaCimaByValor(int valor) {
+	/*@   public normal_behavior
+	  @	   requires   !cartas.isEmpty();
+	  @ also
+	  @   public exceptional_behavior
+	  @ 	requires     !cartas.isEmpty();
+	  @ 	signals_only CartaNotFoundException;
+	  @*/
+	private /*@ pure @*/ Carta getCartaParaCimaByValor(int valor) throws CartaNotFoundException{
 		for (Carta carta: cartas) {
 			if (carta.getValor() == valor && carta.isParaCima()) return carta;
 		}
-		return null;
+		throw new CartaNotFoundException("Carta não encontrada");
 	}
 	
 	/**Puxa todas as cartas acima de uma carta de valor passado como parâmetro.
@@ -134,7 +159,12 @@ public abstract class Pilha {
 	  @ ensures    this.cartas.size() < \old(this.cartas.size());
 	  @*/
 	public ArrayList<Carta> puxarAPartirDeCarta(int valor){
-		Carta primeira = getCartaParaCimaByValor(valor);
+		Carta primeira;
+		try {
+			primeira = getCartaParaCimaByValor(valor);
+		} catch (CartaNotFoundException e) {
+			primeira = null;
+		}
 		ArrayList<Carta> result = new ArrayList<>();
 		
 		if (primeira == null) return result;

@@ -14,7 +14,6 @@ public class Estoque extends Pilha {
 	
 	/*@ requires cartasParaBaixo != null;
 	  @ assignable this.cartas; */
-	  // ensures (this.cartas).equals(\old(this.cartas).addAll(cartasParaBaixo)); --> FIXME acho que eu não posso garantir isso
 	public Estoque(ArrayList<Carta> cartasParaBaixo) {
 		this();
 		cartas.addAll(cartasParaBaixo);
