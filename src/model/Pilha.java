@@ -137,13 +137,6 @@ public abstract class Pilha {
 		return carta;
 	}
 	
-	/*@   public normal_behavior
-	  @	   requires   !cartas.isEmpty();
-	  @ also
-	  @   public exceptional_behavior
-	  @ 	requires     !cartas.isEmpty();
-	  @ 	signals_only CartaNotFoundException;
-	  @*/
 	private /*@ pure @*/ Carta getCartaParaCimaByValor(int valor) throws CartaNotFoundException{
 		for (Carta carta: cartas) {
 			if (carta.getValor() == valor && carta.isParaCima()) return carta;
@@ -156,7 +149,7 @@ public abstract class Pilha {
 	 * @return Lista de cartas puxadas*/
 	/*@ requires   1 <= valor && valor <= 13;
 	  @ assignable this.cartas;
-	  @ ensures    this.cartas.size() < \old(this.cartas.size());
+	  @ ensures    this.cartas.size() <= \old(this.cartas.size());
 	  @*/
 	public ArrayList<Carta> puxarAPartirDeCarta(int valor){
 		Carta primeira;
