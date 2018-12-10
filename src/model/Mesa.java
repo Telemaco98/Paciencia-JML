@@ -139,7 +139,6 @@ public class Mesa implements Observable {
 	 * @return 	Confirmação do movimento*/
 	/*@ 	requires   this.getPilha(fonte_ind).cartaTopo() != null;
 	  @		assignable this.pilhas;
-	  @     ensures    this.getPilha(fonte_ind).cartaTopo() == \old(this.getPilha(fonte_ind).cartaTopo()) || this.getPilha(destino_ind).cartaTopo() == \old(this.getPilha(fonte_ind).cartaTopo()); 
 	  @ also
 	  @		requires   this.getPilha(fonte_ind).cartaTopo() == null;
 	  @     ensures    \result == false;
@@ -304,8 +303,9 @@ public class Mesa implements Observable {
 		System.out.println(mesa);
 		mesa.puxarCartasEstoque();
 		mesa.virarCartaFileira(1);
-		mesa.moverCartaTopo(1, 2);
+		mesa.moverCartaTopo(12, 3);
 		mesa.moverCartas(1, 2, 1);
+		System.out.println(mesa);
 		View view = new CmdView();
 		Controller controller = new Controller(view);
 		mesa.addObserver(controller);

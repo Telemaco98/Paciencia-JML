@@ -10,7 +10,7 @@ public class MainMenu extends AbstractMenu {
 
 	private /*@ spec_public @*/ PilhaListView plv;
 	
-	/*@ requires   parent != null || con != null;
+	/*@ requires   parent != null ||  con != null;
 	  @ assignable this.con;
 	  @ assignable this.options;
 	  @ assignable this.parent;
