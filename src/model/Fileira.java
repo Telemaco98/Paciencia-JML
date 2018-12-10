@@ -18,7 +18,9 @@ public class Fileira extends Pilha{
 	}
 	
 	/*@ requires cartasParaBaixo != null;
-	  @ assignable this.cartas; */
+	  @ assignable this.cartas;
+	  @ ensures (\forall int i; 0 <= i && i < cartasParaBaixo.size(); cartas.get(i) == cartasParaBaixo.get(i));
+	  @*/
 	public Fileira(ArrayList<Carta> cartasParaBaixo) {
 		this();
 		cartas.addAll(cartasParaBaixo);

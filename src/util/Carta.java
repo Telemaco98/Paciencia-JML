@@ -33,6 +33,8 @@ public class Carta implements Comparable<Carta> {
 	  @ requires naipe != null;
 	  @ assignable this.valor;
 	  @ assignable this.naipe;
+	  @ ensures this.valor == valor;
+	  @ ensures this.naipe == naipe;
 	  @*/
 	public Carta (int valor, Naipe naipe) {
 		this.valor = valor;

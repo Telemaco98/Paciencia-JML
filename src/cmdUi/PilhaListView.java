@@ -8,17 +8,29 @@ import util.Carta;
 /**Cuida da visualização das pilhas em linha de comando*/
 public class PilhaListView {
 
-	private ArrayList<Pilha> pilhas;
+	private /*@ spec_public @*/ ArrayList<Pilha> pilhas;
 	
+	/*@ requires pilhas != null;
+	  @ assignable this.pilhas;
+	  @ ensures (\forall int i; 0 <= i && i < pilhas.size(); pilhas.get(i) == this.pilhas.get(i));
+	  @*/
 	public PilhaListView (ArrayList<Pilha> pilhas) {
 		this.pilhas = pilhas;
 	}
 	
+	public /*@ pure @*/ ArrayList<Pilha> getPilhas() {
+		return pilhas;
+	}
+
+	/*@ requires pilhas != null;
+	  @ assignable this.pilhas;
+	  @ ensures (\forall int i; 0 <= i && i < pilhas.size(); pilhas.get(i) == this.pilhas.get(i));
+	  @*/
 	public void setPilhas(ArrayList<Pilha> pilhas) {
 		this.pilhas = pilhas;
 	}
 
-	public void drawPilhas() {
+	public /*@ pure @*/ void drawPilhas() {
 		
 		int index = 1;
 		for (Pilha pilha: pilhas) {
@@ -30,7 +42,7 @@ public class PilhaListView {
 		Main.print("\n");
 	}
 	
-	public String drawCards(Pilha pilha) {
+	public /*@ pure @*/ String drawCards(Pilha pilha) {
 		StringBuilder sb = new StringBuilder();
 		Carta[] cartas = pilha.getCartas();
 		

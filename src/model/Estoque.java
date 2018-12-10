@@ -13,7 +13,9 @@ public class Estoque extends Pilha {
 	}
 	
 	/*@ requires cartasParaBaixo != null;
-	  @ assignable this.cartas; */
+	  @ assignable this.cartas;
+	  @ ensures (\forall int i; 0 <= i && i < cartasParaBaixo.size(); cartas.get(i) == cartasParaBaixo.get(i));
+	  @*/
 	public Estoque(ArrayList<Carta> cartasParaBaixo) {
 		this();
 		cartas.addAll(cartasParaBaixo);

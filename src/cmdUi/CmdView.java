@@ -12,10 +12,10 @@ public class CmdView implements View{
 	private /*@ spec_public nullable @*/ Controller con;
 	
 	/**Tela atual com menu*/
-	private AbstractMenu currentMenu;
+	private /*@ spec_public @*/ AbstractMenu currentMenu;
 	
-	/*@
-	  @ ensures con != null;
+	/*@ ensures con != null;
+	  @ ensures currentMenu != null;
 	  @*/
 	public CmdView() {
 		con = new Controller(this);
@@ -23,7 +23,7 @@ public class CmdView implements View{
 	}
 	
 	/**Inicia o loop onde a tela é desenhada, o sistema espera uma entrada, e logo depois, realiza uma ação.*/
-	public void start() {
+	public /*@ pure @*/ void start() {
 		
 		while (true) {
 			currentMenu.draw();
@@ -33,5 +33,5 @@ public class CmdView implements View{
 	}
 
 	@Override
-	public void drawOnScreen() {}
+	public /*@ pure @*/ void drawOnScreen() {}
 }

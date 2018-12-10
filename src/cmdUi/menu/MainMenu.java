@@ -10,8 +10,14 @@ public class MainMenu extends AbstractMenu {
 
 	private /*@ spec_public @*/ PilhaListView plv;
 	
-	/*@
-	  @ ensures parent == null;
+	/*@ requires   parent != null || con != null;
+	  @ assignable this.con;
+	  @ assignable this.options;
+	  @ assignable this.parent;
+	  @ ensures    this.con == con;
+	  @ ensures    this.options == options;
+	  @ ensures    this.parent == null;
+	  @ ensures (\forall int i; 0 <= i && i < con.getPilhas().size(); con.getPilhas().get(i) == this.plv.getPilhas().get(i));
 	  @*/
 	public MainMenu(Controller con, int options) {
 		super(con, options, null);
@@ -40,7 +46,7 @@ public class MainMenu extends AbstractMenu {
 	}
 	
 	@Override
-	public AbstractMenu processInput(int op) {
+	public /*@ pure @*/ AbstractMenu processInput(int op) {
 		switch (op) {
 		case 1: opMoverCartas(); break;
 		case 2: opVirarCartaEstoque(); break;
@@ -51,20 +57,26 @@ public class MainMenu extends AbstractMenu {
 		return this;
 	}
 	
-	public void opFinalizar() {
+	public /*@ pure @*/ void opFinalizar() {
 		Main.print("\n\nJogo finalizado.\n\n");
 		System.exit(0);
 	}
 	
+	/*@ ensures (\forall int i; 0 <= i && i < con.getPilhas().size(); con.getPilhas().get(i) == this.plv.getPilhas().get(i));
+	  @*/
 	public void opReiniciar() {
 		con.iniciarJogo();
 		this.plv.setPilhas(con.getPilhas());
 	}
 	
+	/*@ assignable this.con;
+	  @*/
 	public void opVirarCartaEstoque() {
 		con.puxarCartaEstoque();
 	}
-
+	
+	/*@ assignable this.con;
+	  @*/
 	public void opMoverCartas() {
 		Main.print("\n");
 		Main.print("Pilha origem: ");

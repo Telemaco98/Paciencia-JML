@@ -103,7 +103,7 @@ public abstract class Pilha {
 	  @ 	requires     cartas.isEmpty();
 	  @ 	signals_only PilhaVaziaException;
 	  @*/
-	public Carta cartaTopo() throws PilhaVaziaException {
+	public /*@ pure @*/ Carta cartaTopo() throws PilhaVaziaException {
 		Carta carta = new Carta (1, Naipe.COPAS);
 		try {
 			carta = cartas.peek();
@@ -121,7 +121,7 @@ public abstract class Pilha {
 	  @	   requires   !cartas.isEmpty();
 	  @    assignable this.cartas;
 	  @    ensures    this.cartas.size() == \old(this.cartas.size()) - 1;
-	  @    ensures    this.cartas.search(this.cartas.peek()) == -1;
+	  @    ensures    this.cartas.search(\old(this.cartas.peek())) == -1;
 	  @ also
 	  @   public exceptional_behavior
 	  @ 	requires     cartas.isEmpty();

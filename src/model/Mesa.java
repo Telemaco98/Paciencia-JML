@@ -2,12 +2,16 @@ package model;
 
 import java.util.ArrayList;
 
+import cmdUi.CmdView;
+
 import config.Configuracao;
+import controller.Controller;
 import exception.PilhaVaziaException;
 import util.Baralho;
 import util.Carta;
 import util.Observable;
 import util.Observer;
+import util.View;
 
 
 /**Representa uma mesa do jogo Paciência, com pilhas e funções
@@ -15,7 +19,7 @@ import util.Observer;
 public class Mesa implements Observable {
 
 	/**Pilhas de cartas*/
-	private /*@ spec_public nullable @*/ ArrayList<Pilha> pilhas;
+	private /*@ spec_public @*/ ArrayList<Pilha> pilhas;
 	
 	/**Quantidade inicial do estoque*/
 	private static final int QTD_ESTOQUE_INICIAL = 52-1-2-3-4-5-6-7; //Quantidade de cartas do estoque inicialmente é igual a 52 menos as cartas das fileiras
@@ -32,7 +36,13 @@ public class Mesa implements Observable {
 	
 	/**Gera as pilhas de acordo com as regras do jogo.
 	 * @param baralho	Fonte de cartas para construir Estoque e Fileiras*/
-
+	/*@ requires   baralho != null; 
+	  @ assignable this.pilhas;
+	  @ ensures    this.pilhas.size() == 13; 
+	  @ ensures    this.pilhas.get(0).size() == 24;
+	  @ ensures    (\forall int i; 1 <= i && i < 6; this.pilhas.get(i).size() == 0);
+	  @ ensures    (\forall int i; 6 <= i && i < 13; this.pilhas.get(i).size() == i - 5);
+	  @*/
 	public Mesa(Baralho baralho) {
 		pilhas = new ArrayList<>();
 				
@@ -54,7 +64,19 @@ public class Mesa implements Observable {
 		}
 	}
 	
-	/**Move as cartas do estoque para o descarte de acordo com a configuração escolhida pelo usuário.*/
+	/**
+	 * Move the cards from stock to the discard according with the settings chosen by the user 
+	 */
+	/*@ 	requires   Configuracao.getInstance().getQtdCartasPuxadasEstoque() == 1 || !this.getEstoque().isEmpty();
+	  @		assignable this.pilhas;
+	  @ also
+	  @		requires   Configuracao.getInstance().getQtdCartasPuxadasEstoque() == 3 || !this.getEstoque().isEmpty();
+	  @ 	assignable this.pilhas;
+	  @ also
+	  @		requires   this.pilhas.get(0).isEmpty();
+	  @     assignable this.pilhas;
+	  @     ensures	   this.pilhas.get(1).size() == 0;
+	  @*/
 	public void puxarCartasEstoque() {
 		int qtd = Configuracao.getInstance().getQtdCartasPuxadasEstoque();
 		
@@ -91,6 +113,12 @@ public class Mesa implements Observable {
 	
 	/**Vira a carta do topo de uma Fileira caso ela esteja virada para baixo.
 	 * @param index		Index da fileira escolhida*/
+	/*@ 	requires   this.getFileira(index).cartaTopo() != null;
+	  @		assignable this.pilhas;
+	  @     ensures    this.getFileira(index).cartaTopo().isParaCima() == true; 
+	  @ also
+	  @		requires   this.getFileira(index).cartaTopo() == null;
+	  @*/
 	public void virarCartaFileira(int index) {
 		
 		Pilha fileira = getFileira(index);
@@ -98,13 +126,10 @@ public class Mesa implements Observable {
 		Carta topo = null;
 		try {
 			topo = fileira.cartaTopo();
+			if (!topo.isParaCima()) topo.virarCarta();
 		} catch (PilhaVaziaException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e);
 		}
-		
-		if (!topo.isParaCima()) topo.virarCarta();
-		
 		notifyAllObservers();
 	}
 	
@@ -112,6 +137,13 @@ public class Mesa implements Observable {
 	 * @param fonte_ind		Index da pilha fonte
 	 * @param destino_ind	Index da pilha destino
 	 * @return 	Confirmação do movimento*/
+	/*@ 	requires   this.getPilha(fonte_ind).cartaTopo() != null;
+	  @		assignable this.pilhas;
+	  @     ensures    this.getPilha(fonte_ind).cartaTopo() == \old(this.getPilha(fonte_ind).cartaTopo()) || this.getPilha(destino_ind).cartaTopo() == \old(this.getPilha(fonte_ind).cartaTopo()); 
+	  @ also
+	  @		requires   this.getPilha(fonte_ind).cartaTopo() == null;
+	  @     ensures    \result == false;
+	  @*/
 	public boolean moverCartaTopo(int fonte_ind, int destino_ind) {
 		Pilha fonte = getPilha(fonte_ind);
 		Pilha destino = getPilha(destino_ind);
@@ -137,6 +169,14 @@ public class Mesa implements Observable {
 	 * @param destino_ind	Index da pilha destino
 	 * @param valorCartaReferencia		Valor da primeira carta do grupo de cartas a ser movido
 	 * @return 	Confirmação do movimento*/
+	/*@ 	requires   !this.getPilha(fonte_ind).isEmpty();
+	  @     requires   1 <= valorCartaReferencia && valorCartaReferencia <= 13;
+	  @		assignable this.pilhas;
+	  @ also
+	  @		requires   this.pilhas.get(fonte_ind).isEmpty();
+	  @     requires   1 <= valorCartaReferencia && valorCartaReferencia <= 13;
+	  @     ensures	   \result == false;
+	  @*/
 	public boolean moverCartas (int fonte_ind, int destino_ind, int valorCartaReferencia) {
 		Pilha fonte = getPilha(fonte_ind);
 		Pilha destino = getPilha(destino_ind);
@@ -157,35 +197,39 @@ public class Mesa implements Observable {
 		return res;
 	}
 	
-	public GameStatus getGameStatus() {
+	public /*@ pure @*/ ArrayList<Observer> getObservers() {
+		return observers;
+	}
+
+	public /*@ pure @*/ GameStatus getGameStatus() {
 		return verificador.verificarSituacao();
 	}
 
-	public Pilha getEstoque() {
+	public /*@ pure @*/ Pilha getEstoque() {
 		return pilhas.get(0);
 	}
 	
-	public Pilha getDescarte() {
+	public /*@ pure @*/ Pilha getDescarte() {
 		return pilhas.get(1);
 	}
 	
-	public Pilha getFundacao(int index) {
+	public /*@ pure @*/ Pilha getFundacao(int index) {
 		return pilhas.get(index+2);
 	}
 	
-	public Pilha getFileira(int index) {
+	public /*@ pure @*/ Pilha getFileira(int index) {
 		return pilhas.get(index+6);
 	}
 	
-	public Pilha getPilha(int index) {
+	public /*@ pure @*/ Pilha getPilha(int index) {
 		return pilhas.get(index-1);
 	}
 	
-	public ArrayList<Pilha> getPilhas(){
+	public /*@ pure @*/ ArrayList<Pilha> getPilhas(){
 		return pilhas;
 	}
 	
-	public String toString() {
+	public /*@ pure @*/ String toString() {
 		StringBuilder sb = new StringBuilder();
 		
 		int index = 1;
@@ -201,17 +245,25 @@ public class Mesa implements Observable {
 	}
 
 	@Override
+	/*@ also
+      @ 	assignable this.observers;
+	  @ 	ensures    this.observers.size() == \old(this.observers.size()) + 1;
+	  @*/
 	public void addObserver(Observer o) {
 		observers.add(o);
 	}
 
 	@Override
+	/*@ also
+	  @ 	assignable this.observers;
+	  @ 	ensures    this.observers.size() == \old(this.observers.size()) - 1;
+	  @*/
 	public void removeObserver(Observer o) {
 		observers.remove(o);
 	}
 
 	@Override
-	public void notifyAllObservers() {
+	public /*@ pure @*/ void notifyAllObservers() {
 		for (Observer observer: observers) {
 			observer.update();
 		}
@@ -222,24 +274,21 @@ public class Mesa implements Observable {
 		
 		/**Verifica a situação do jogo.
 		 * @return Estado do jogo*/
-		public GameStatus verificarSituacao() {
+		public /*@ pure @*/ GameStatus verificarSituacao() {
 			if (verificarJogoVencido()) return GameStatus.VENCIDO;
 			else return GameStatus.JOGANDO;
 		}
 		
 		/**Verifica se o jogador já venceu a partida.
 		 * @return Booleano representando se o jogador já venceu ou não*/
-		/*@ 
-		  @ ensures \result == false || \result == true;
-		  @*/
-		private boolean verificarJogoVencido() {
+		private /*@ pure @*/ boolean verificarJogoVencido() {
 			for (int i = 0; i < 4; i++) {
 				Pilha fundacao = getFundacao(i);
 				Carta topo = null;
 				try {
 					topo = fundacao.cartaTopo();
 				} catch (PilhaVaziaException e) {
-					e.printStackTrace();
+					System.out.println(e);
 				}
 				if (topo == null) return false;
 				if (!topo.isMaiorValor()) return false;
@@ -253,5 +302,14 @@ public class Mesa implements Observable {
 		Baralho baralho = new Baralho();
 		Mesa mesa = new Mesa(baralho);
 		System.out.println(mesa);
+		mesa.puxarCartasEstoque();
+		mesa.virarCartaFileira(1);
+		mesa.moverCartaTopo(1, 2);
+		mesa.moverCartas(1, 2, 1);
+		View view = new CmdView();
+		Controller controller = new Controller(view);
+		mesa.addObserver(controller);
+		mesa.removeObserver(controller);
+		mesa.notifyAllObservers();
 	}
 }

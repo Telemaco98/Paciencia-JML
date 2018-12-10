@@ -7,11 +7,18 @@ import controller.Controller;
 
 public abstract class AbstractMenu {
 	protected /*@ spec_public nullable @*/ Controller con;
-	protected  /*@ spec_public nullable @*/ AbstractMenu parent;
-	protected int options;
-	protected Scanner sc;
+	protected /*@ spec_public nullable @*/ AbstractMenu parent;
+	protected /*@ spec_public @*/ int options;
+	protected /*@ spec_public @*/ Scanner sc;
 	
-	/*@ requires parent != null;
+	/*@ requires   parent != null || con != null;
+	  @ assignable this.con;
+	  @ assignable this.options;
+	  @ assignable this.parent;
+	  @ assignable this.sc;
+	  @ ensures    this.con == con;
+	  @ ensures    this.options == options;
+	  @ ensures    this.parent == parent;
 	  @*/
 	protected AbstractMenu(Controller con, int options, AbstractMenu parent) {
 		this.con = con;
@@ -20,17 +27,17 @@ public abstract class AbstractMenu {
 		sc = new Scanner(System.in);
 	}
 	
-	public abstract void draw();
+	public abstract /*@ pure @*/ void draw();
 		
-	public abstract AbstractMenu processInput(int op);
+	public abstract /*@ pure @*/ AbstractMenu processInput(int op);
 	
-	public boolean isOptionValid(int option) {
+	public /*@ pure @*/boolean isOptionValid(int option) {
 		return (option >= 1 && option <= options);
 	}
 	
 	/**Receber uma escolha de opção do usuário
 	 * @return Opção entrada*/
-	public int getOptionInput() {
+	public /*@ pure @*/ int getOptionInput() {
 		int op = sc.nextInt();
 		
 		while (!isOptionValid(op)) {
